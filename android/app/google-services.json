@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "811935427427",
+    "project_id": "modernlogin-30f9a",
+    "storage_bucket": "modernlogin-30f9a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811935427427:android:5b805e7cea68bb03954156",
+        "android_client_info": {
+          "package_name": "com.example.modern_login"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFNbQsIE262RCTn248ybKOiu6Un2iR8c8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

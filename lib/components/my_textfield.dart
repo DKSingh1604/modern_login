@@ -37,7 +37,7 @@ class MyTextfield extends StatelessWidget {
           filled: true,
           labelText: labelText,
           labelStyle: TextStyle(
-            color: Colors.grey.shade500,
+            color: Colors.grey.shade600,
           ),
         ),
       ),

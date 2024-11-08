@@ -7,6 +7,7 @@ class MyTextfield extends StatelessWidget {
   final controller;
   final bool? obscureText;
   // final String? hintText;
+  // final String? hintText;
 
   const MyTextfield({
     super.key,

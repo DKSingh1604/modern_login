@@ -43,6 +43,18 @@ android {
     }
 }
 
+dependencies {
+    // Firebase Auth
+    implementation 'com.google.firebase:firebase-auth:21.0.3'
+    
+    // Google Sign-In
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+
+    // Firebase Core (if not added already)
+    implementation 'com.google.firebase:firebase-core:21.1.0'
+}
+
 flutter {
     source = "../.."
 }
+apply plugin: 'com.google.gms.google-services'

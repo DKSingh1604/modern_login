@@ -7,19 +7,21 @@ import 'package:modern_login/components/my_button.dart';
 import 'package:modern_login/components/my_textfield.dart';
 import 'package:modern_login/pages/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //text editing controller
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+
+  final confirmPasswordController = TextEditingController();
 
   //wrong email messsage popup
   void wrongEmailMessage() {
@@ -84,8 +86,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  //S I G N     U S E R    I N    F U N C T I O N
-  void signUserIn() async {
+  //S I G N     U S E R    U P    F U N C T I O N
+  void signUserUp() async {
     if (emailController.text.isEmpty) {
       showDialog(
         context: context,
@@ -139,15 +141,42 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
+    //delay for 1 second
+    await Future.delayed(Duration(seconds: 1));
 
-    //try sign in
+    //try creating the user
     try {
-      //Attempt sign in with firebase
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      //pop loading animation - if sign in successfull
+      //check if password and confrim password are the same
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else if (passwordController.text.length < 6 ||
+          confirmPasswordController.text.length < 6) {
+        //pop loading animation
+        Navigator.pop(context);
+
+        //show passwordLength dialogbox
+      } else {
+        //pop loading animation
+        Navigator.pop(context);
+
+        //show error dialog
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              elevation: 5,
+              title: Text(
+                "Passwords do not match",
+                style: TextStyle(fontSize: 18),
+              ),
+            );
+          },
+        );
+      }
+      //pop loading animation - if sign up successfull
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       //pop loading animation
@@ -182,12 +211,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 const SizedBox(
-                  height: 70,
+                  height: 40,
                 ),
 
-                //welcome back, you have been missed
+                //welcome message
                 Text(
-                  "Welcome back, you've been missed!",
+                  "We Welcome you!",
                   style: TextStyle(
                     color: Colors.grey[700],
                     // fontSize: 15,
@@ -214,28 +243,26 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: "Password",
                 ),
 
-                //forgot password
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Forgot password?",
-                        style: TextStyle(color: Colors.grey.shade600),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //sign in button
-                MyButton(
-                  onTap: signUserIn,
-                  text: "Sign In",
+                //confirm pasword textfield
+                MyTextfield(
+                  controller: confirmPasswordController,
+                  // hintText: "Password",
+                  obscureText: true,
+                  labelText: "Confirm Password",
                 ),
 
                 SizedBox(
-                  height: 23,
+                  height: 15,
+                ),
+
+                //sign up button
+                MyButton(
+                  onTap: signUserUp,
+                  text: "Sign Up",
+                ),
+
+                SizedBox(
+                  height: 15,
                 ),
 
                 //or continue text
@@ -266,7 +293,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 SizedBox(
-                  height: 35,
+                  height: 30,
                 ),
 
                 //google + apple logins
@@ -292,7 +319,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //apple button
                     GestureDetector(
-                      onTap: () => {},
+                      onTap: () {},
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Container(
@@ -312,20 +339,20 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 SizedBox(
-                  height: 35,
+                  height: 30,
                 ),
                 //not a member? sign up text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Not a member? ",
+                      "Already a member? ",
                       style: TextStyle(fontSize: 15),
                     ),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: Text(
-                        "Regsiter here",
+                        "Login here",
                         style: TextStyle(color: Colors.blue, fontSize: 15),
                       ),
                     ),
